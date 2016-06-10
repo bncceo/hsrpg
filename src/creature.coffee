@@ -3,7 +3,7 @@ NameGenerator = require 'sillyname'
 class Creature
 
   constructor: (@maximumhitpoints) ->
-    @hitpoints = @maxhitpoints = @maximumhitpoints
+    @hitpoints = @maximumhitpoints
     @name = NameGenerator()
 
   get_name: ->
