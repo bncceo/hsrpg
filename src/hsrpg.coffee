@@ -14,13 +14,16 @@
 # Author:
 #   bncceo
 
-Game = require './game'
-Store = require './datastore'
+RpgGame = require './game'
+DataStore = require './datastore'
 
 module.exports = (robot) ->
 
-  Store = new DataStore(robot)
-  Game = new Game(robot, storage)
+  store = new DataStore(robot)
+  game = new RpgGame(robot, store)
 
-  robot.hear /^!fight/, (res) ->
-    res.send 'You are fighting!'    
+  robot.hear /^!fightmonster/i, (res) ->
+    res.send 'You are fighting!'
+
+  robot.hear /^!fight (.*)/i, (res) ->
+    res.send 'Trying to fight ' + res.match[1].toLowerCase().trim()

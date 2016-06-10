@@ -1,4 +1,4 @@
-class Storage
+class DataStore
   constructor: (@robot) ->
     @robot.brain.on 'loaded', @load_storage
     @db = {}
@@ -8,3 +8,5 @@ class Storage
     @db = @robot.brain.data.hsrpg ||= {
 
     }
+
+module.exports = DataStore
