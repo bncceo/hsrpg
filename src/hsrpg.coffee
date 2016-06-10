@@ -14,6 +14,9 @@
 # Author:
 #   bncceo
 
+Game = require './game'
+Store = require './datastore'
+
 module.exports = (robot) ->
   robot.respond /hello/, (res) ->
     res.reply "hello!"
