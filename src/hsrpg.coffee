@@ -16,6 +16,7 @@
 
 RpgGame = require './game'
 DataStore = require './datastore'
+Creature = require './creature'
 
 module.exports = (robot) ->
 
@@ -23,7 +24,8 @@ module.exports = (robot) ->
   game = new RpgGame(robot, store)
 
   robot.hear /^!fightmonster/i, (res) ->
-    res.send 'You are fighting!'
+    creature = new Creature(5)
+    res.send 'You are fighting ' + creature.get_name()
 
   robot.hear /^!fight (.*)/i, (res) ->
     res.send 'Trying to fight ' + res.match[1].toLowerCase().trim()
