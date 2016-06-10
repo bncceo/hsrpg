@@ -18,8 +18,9 @@ Game = require './game'
 Store = require './datastore'
 
 module.exports = (robot) ->
-  robot.respond /hello/, (res) ->
-    res.reply "hello!"
 
-  robot.hear /orly/, (res) ->
-    res.send "yarly"
+  Store = new DataStore(robot)
+  Game = new Game(robot, storage)
+
+  robot.hear /^!fight/, (res) ->
+    res.send 'You are fighting!'    
