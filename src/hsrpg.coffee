@@ -29,3 +29,6 @@ module.exports = (robot) ->
 
   robot.hear /^!fight (.*)/i, (res) ->
     res.send 'Trying to fight ' + res.match[1].toLowerCase().trim()
+
+  robot.hear /^!resetgame/i, (res) ->
+    game.reset()

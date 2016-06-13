@@ -1,14 +1,17 @@
+Creature = require './creature'
+
 class DataStore
   constructor: (@robot) ->
     console.log 'Initializing Datastore'
+    # @load_storage()
     @robot.brain.on 'loaded', @load_storage
-    @db = {}
+    @db = { }
 
   load_storage: =>
-    now = Date.now()
+    console.info 'Loading data for datastore'
     @db = @robot.brain.data.hsrpg ||= {
       heroes: {}
-      creature: new Creature(6, 7)
+      creature: new Creature(1, 1)
     }
 
   Object.defineProperties @prototype,
@@ -18,8 +21,15 @@ class DataStore
       get: -> @db.creature
       set: (c) -> @db.creature = c; @save()
 
+  reset_storage: ->
+    @robot.logger.info 'Resetting storage'
+    @robot.brain.data.hsrpg = undefined
+    @save()
+    @robot.logger.info 'Reloading storage with new data'
+    @load_storage()
+    @save()
+
   save: ->
-    console.log 'Saving brain state.'
     @robot.brain.save()
 
 module.exports = DataStore

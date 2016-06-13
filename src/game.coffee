@@ -1,3 +1,5 @@
+require './utils'
+_ = require 'underscore'
 Creature = require './creature'
 
 class Game
@@ -5,7 +7,6 @@ class Game
 
   constructor: (@robot, @storage, @res=undefined) ->
     console.log 'Game initiated'
-    heroes: {}
 
   Object.defineProperties @prototype,
     creature:
@@ -27,18 +28,37 @@ class Game
     @heroes[hero]
 
   fightmonster: (res) ->
-    @creature.strike(3, @hero_name)
+    damage = _.random(0, 5)
 
-    @send "#{@hero_name} strikes #{@creature.name} dealing 3 damage! He has #{@creature.damage} damage done to his #{@creature.hitpoints} hitpoints!"
+    @creature.strike(damage, @hero_name)
+
+    @send "#{@hero_name} strikes #{@creature.name} dealing #{@creature.damage} damage to his #{@creature.hitpoints} remaining hitpoints!"
     if @creature.is_dead
-      for adventurer, loot of @creature.get_loot()
-        @announce_creature_death()
-
+      @announce_creature_death()
+      for hero, loot of @creature.get_loot()
+        @level_up_hero(hero, loot)
       @new_creature()
       @announce_creature()
     else
       @send 'He lived! You must strike again!'
     @save()
+
+  level_up_hero: (hero_name, allLoot) ->
+    hero = @get_hero(hero_name)
+
+    hero.xp += allLoot.xp || 0
+    for loot in allLoot.loot
+      hero.loot[loot] ||= 0
+      hero.loot[loot]++
+
+    if allLoot.loot
+      loot_str = allLoot.loot.join_and()
+      loot_announce = "#{hero_name} received the following: #{loot_str}"
+    else
+      loot_announce = ''
+
+    @send "#{loot_announce}"
+
 
   announce_creature: ->
     @send "Suddenly a rabid #{@creature.name} appears!"
@@ -54,6 +74,9 @@ class Game
     if xp == xp then xp++
 
     @creature = new Creature(hp, xp)
+
+  reset: ->
+    @storage.reset_storage()
 
   save: ->
     @storage.save()
