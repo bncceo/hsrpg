@@ -32,7 +32,7 @@ class Game
 
     @creature.strike(damage, @hero_name)
 
-    @send "#{@hero_name} strikes #{@creature.name} dealing #{@creature.damage} damage to his #{@creature.hitpoints} remaining hitpoints!"
+    @send "#{@hero_name} strikes #{@creature.name} dealing #{damage} damage to his #{@creature.hitpoints} remaining hitpoints!"
     if @creature.is_dead
       @announce_creature_death()
       for hero, loot of @creature.get_loot()
@@ -51,14 +51,9 @@ class Game
       hero.loot[loot] ||= 0
       hero.loot[loot]++
 
-    if allLoot.loot
+    if allLoot.loot.length > 0
       loot_str = Utils.join_and(allLoot.loot)
-      loot_announce = "#{hero_name} received the following: #{loot_str}"
-    else
-      loot_announce = ''
-
-    @send "#{loot_announce}"
-
+      @send "#{hero_name} received the following: #{loot_str}"
 
   announce_creature: ->
     @send "Suddenly a rabid #{@creature.name} appears!"
