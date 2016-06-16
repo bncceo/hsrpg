@@ -1,4 +1,4 @@
-require './utils'
+Utils = require './utils'
 _ = require 'underscore'
 Creature = require './creature'
 
@@ -6,7 +6,7 @@ class Game
   prefix: '☠ '
 
   constructor: (@robot, @storage, @res=undefined) ->
-    console.log 'Game initiated'
+    #console.log 'Game initiated'
 
   Object.defineProperties @prototype,
     creature:
@@ -28,7 +28,7 @@ class Game
     @heroes[hero]
 
   fightmonster: (res) ->
-    damage = _.random(0, 5)
+    damage = _.random(1, 5)
 
     @creature.strike(damage, @hero_name)
 
@@ -52,7 +52,7 @@ class Game
       hero.loot[loot]++
 
     if allLoot.loot
-      loot_str = allLoot.loot.join_and()
+      loot_str = Utils.join_and(allLoot.loot) # allLoot.loot.join_and()
       loot_announce = "#{hero_name} received the following: #{loot_str}"
     else
       loot_announce = ''
