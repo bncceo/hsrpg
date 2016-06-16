@@ -52,7 +52,7 @@ class Game
       hero.loot[loot]++
 
     if allLoot.loot
-      loot_str = Utils.join_and(allLoot.loot) # allLoot.loot.join_and()
+      loot_str = Utils.join_and(allLoot.loot)
       loot_announce = "#{hero_name} received the following: #{loot_str}"
     else
       loot_announce = ''
